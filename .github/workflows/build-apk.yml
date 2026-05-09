@@ -1,4 +1,4 @@
-name: Build APK
+name: 编译蓝牙控制器 APK
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-apk:
     name: Build Release APK
     runs-on: ubuntu-latest
 
@@ -23,19 +23,9 @@ jobs:
       - name: 安装 Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
+          flutter-version: '3.19.6'
           channel: stable
           cache: true
-
-      - name: 安装 Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          api-level: 34
-          build-tools: '34.0.0'
-          components: 'platform-tools,platform;android-34,build-tools;34.0.0'
-
-      - name: 接受 Android SDK 许可
-        run: yes | sdkmanager --licenses || true
 
       - name: Flutter 环境信息
         run: flutter --version
@@ -46,12 +36,12 @@ jobs:
       - name: 编译 APK (Release)
         run: flutter build apk --release
 
-      - name: 准备输出文件
+      - name: 重命名 APK
         run: |
           mkdir -p output
           cp build/app/outputs/flutter-apk/app-release.apk output/蓝牙控制器_v1.0.apk
 
-      - name: 上传 APK (Artifact)
+      - name: 上传 APK
         uses: actions/upload-artifact@v4
         with:
           name: 蓝牙控制器APK
@@ -66,18 +56,15 @@ jobs:
           name: 蓝牙控制器 v1.0.${{ github.run_number }}
           body: |
             ## 📱 蓝牙控制器 APK
-
             ### 功能
             - 🔍 自动搜索附近蓝牙设备
             - 📱 点击设备一键连接
             - 🎮 三个控制按钮：上升(0x01)、停止(0x02)、下降(0x03)
             - ✏️ 支持修改设备显示名称
-
             ### 安装说明
             1. 下载下方 APK 文件
             2. 在 Android 手机上开启「允许安装未知来源应用」
             3. 安装并授予蓝牙权限即可使用
-
             > 支持 Android 5.0 (API 21) 及以上版本
           files: output/蓝牙控制器_v1.0.apk
           draft: false
