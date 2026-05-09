@@ -1,0 +1,22 @@
+name: bluetooth_controller
+description: 蓝牙设备控制APP，支持搜索连接蓝牙设备并发送控制指令
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_blue_plus: ^1.31.12
+  permission_handler: ^11.3.1
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
